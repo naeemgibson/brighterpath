@@ -1,0 +1,72 @@
+{% extends 'bpath/base.html'%}
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brighter Path</title>
+</head>
+<body>
+    <div class="header-bar">
+        <div>
+            <h1>Hello {{request.user|title}}</h1>
+            <h3 style="margin:0" >You have <i>{{count}}</i> incomplete note{{ count|pluralize:"s"}}</h3>
+        </div>
+        {% if request.user.is_authenticated%}
+        <a href="{% url 'logout'%}">Logout</a>
+        {% else %}
+        <a href="{% url 'login'%}">Login</a>
+        {%endif%}
+    </div>
+  
+    <a class="back" href="{% url 'dash' %}"><h3>Go Back</h3></a>
+    <h1>Respite</h1>
+    
+
+    <div id="search-add-wrapper">
+        <form method="GET" style="margin-top: 20px; display: flex;">
+            <input type="text" name="search-area" value="{{search_input}}">
+            <input class="button" type="submit" value="Search">
+        </form>
+        <a id="add-link" href="{% url 'respite-create' %}"><h2>Add Respite Note</h2></a>
+    </div>
+  
+
+
+<div id="respitenotes" class="respite-notes-wrapper">
+    {%for respite in list_of_respite %}
+    <div class="respite-wrapper" data-position="{{respite.pk}}">
+            {% if respite.complete %}
+            <div class="respite-title">
+            <div class="respite-complete-icon"></div>
+            <div ><a href="{% url 'respite-update' respite.id %}">{{respite}}</a></div> 
+        </div>
+            <div>
+            <a class="delete-link" href="{% url 'respite-update' respite.id %}"style="padding: 0 5px;">&#x270E;</a>
+            <a class="delete-link" href="{% url 'respite' respite.id %}"style="padding: 0 20px;">&#x1f50d;</a>
+            <a class="delete-link" href="{% url 'respite-delete' respite.id %}">&#215;</a>
+            </div>
+        {% else %}
+        <div class="respite-title">
+        <div class="respite-incomplete-icon"></div>
+        <div style="background-color: lightgray;"><a href="{% url 'respite-update' respite.id %}">{{respite}}</a></div> 
+        </div>
+            <div>
+            <a class="delete-link" href="{% url 'respite-update' respite.id %}"style="padding: 0 5px;">&#x270E;</a>
+            <a class="delete-link" href="{% url 'respite' respite.id %}"style="padding: 0 20px;">&#x1f50d;</a>
+            <a class="delete-link" href="{% url 'respite-delete' respite.id %}">&#215;</a>
+            </div>
+        {% endif %}
+    </div>
+    
+    {% empty %}
+   <h3>No Notes In List</h3>
+    {% endfor %}
+</div>
+</body>
+</html>
+
+{% endblock content%}
