@@ -1,0 +1,33 @@
+{% extends 'bpath/base.html'%}
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="header-bar">
+        <div>
+        <h1>Respite Details For: {{respite_details}} </h1>
+        </div>
+        <a href="{% url 'respites' %}"><h3>Go Back</h3></a>
+    </div>
+    
+    <div class="container2">
+        <h2>Staff Person: {{ respite_details.staff}}</h2>
+        <h3>Service Date: {{respite_details.date}}</h3>
+        <h3>Service Start Time: {{respite_details.start}}</h3>
+        <h3>Service End Time: {{respite_details.end}}</h3>
+        <h3>Service Note: {{respite_details.notes}}</h3>
+        <h3>Service Note Complete?: {{respite_details.complete}}</h3>
+        <h3>Service Note Entered Date: {{respite_details.create}}</h3>
+    </div>
+    
+</body>
+</html>
+
+{% endblock content%}

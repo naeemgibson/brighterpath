@@ -1,0 +1,82 @@
+{% extends 'bpath/base.html'%}
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrighterPath</title>
+</head>
+<body>
+    <div class="container1">
+        <div class="header-bar-dash">
+        <div class="portal">
+            <h1>BrighterPath Parent Portal</h1>
+        </div>
+        <div class="dashhead">
+            <h2>Welcome {{request.user|title}}</h2>
+            <h2><a class="back" href="{% url 'logout'%}">Logout</a></h2>
+        </div>
+    </div>
+        <div class="dash">
+          <div class="col">
+                <div class="card-body">
+                  <h3 class="card-title"><a href="">Client<br/> Health<br/> Information</a></h3>
+                </div>
+              </div>
+          <div class="col">
+                <div class="card-body">
+                  <h3 class="card-title"><a href="">Action Plan</a></h3>
+                </div>
+              </div>
+          <div class="col">
+                <div class="card-body">
+                  <h3 class="card-title"><a href="">Life Plan</a></h3>
+                </div>
+              </div>
+        </div>
+        <div class="dash">
+            <div class="col">
+                  <div class="card-body">
+                    <h3 class="card-title"><a href="">Support <br/> Broker<br/>Agreement</a></h3>
+                  </div>
+                </div>
+            <div class="col">
+              
+                  <div class="card-body">
+                    <h3 class="card-title"><a href="">Budget</a></h3>
+                  </div>
+                </div>
+            <div class="col">
+                  <div class="card-body">
+                    <h3 class="card-title"><a href="">Support <br/> Staff<br/> Invoice</a></h3>
+                  </div>
+                </div>
+          </div>
+          <div class="dash">
+            <div class="col">
+                  <div class="card-body">
+                    <h3 class="card-title"><a href="">Expenses/ <br/>Reimbursements</a></h3>
+                  </div>
+                </div>
+            <div class="col">
+              
+                  <div class="card-body">
+                    <h3 class="card-title"><a href="{% url 'respites'%}">Respite</a></h3>
+                  </div>
+                </div>
+            <div class="col">
+                  <div class="card-body">
+                    <h3 class="card-title"><a href="">Messages</a></h3>
+                  </div>
+                </div>
+          </div>
+      </div>
+    
+    
+</body>
+</html>
+
+{% endblock content%}
