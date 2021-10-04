@@ -1,4 +1,6 @@
 from django.shortcuts import redirect, render
+from django.http.response import JsonResponse
+
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
@@ -10,6 +12,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .models import Respite
+from .models import Post
+from .models import Comment
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import permissions
+from .serializers import PostSerializer
+from .serializers import CommentSerializer
 
 class CustomLoginView(LoginView):
     template_name = 'bpath/login.html'
@@ -87,3 +97,128 @@ class DeleteView(LoginRequiredMixin, DeleteView):
     model = Respite
     context_object_name = 'respite_details'
     success_url = reverse_lazy('respites')
+
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def postOverview(request):
+    api_urls= {
+        'List': '/post-list',
+        'Detail View': '.post-detail/<str:pk>/',
+        'Create': '/post-create',
+        'Update': '/post-update/<str:pk>/',
+        'Delete': '/post-delete/<str:pk>',
+
+    }
+
+    return JsonResponse(api_urls)
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def postList(request):
+    posts = Post.objects.all()
+    serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def postDetail(request, pk):
+    posts = Post.objects.get(id=pk)
+    serializer = PostSerializer(posts, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def postCreate(request):
+    serializer = PostSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def postUpdate(request, pk):
+
+    posts = Post.objects.get(id=pk)
+    serializer = PostSerializer(instance=posts, data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+@permission_classes((permissions.AllowAny,))
+def postDelete(request, pk):
+
+    posts = Post.objects.get(id=pk)
+    posts.delete()
+
+    return Response('Item is gone')
+
+# ------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def commentOverview(request):
+    api_urls= {
+        'List': '/comment-list',
+        'Detail View': '.comment-detail/<str:pk>/',
+        'Create': '/comment-create',
+        'Update': '/comment-update/<str:pk>/',
+        'Delete': '/comment-delete/<str:pk>',
+
+    }
+
+    return JsonResponse(api_urls)
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def commentList(request):
+    comments = Comment.objects.all()
+    serializer = CommentSerializer(comments, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def commentDetail(request, pk):
+    comments = Comment.objects.get(id=pk)
+    serializer = CommentSerializer(comments, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def commentCreate(request):
+    serializer = CommentSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def commentUpdate(request, pk):
+
+    comments = Comment.objects.get(id=pk)
+    serializer = CommentSerializer(instance=comments, data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+@permission_classes((permissions.AllowAny,))
+def commentDelete(request, pk):
+
+    comments = Comment.objects.get(id=pk)
+    comments.delete()
+
+    return Response('Item is gone')
